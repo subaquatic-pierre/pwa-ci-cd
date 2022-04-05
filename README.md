@@ -14,18 +14,6 @@ A Github Repo to re-create the issue is here:
 
 Note: You will need AWS Hosted zone for testing
 
-## Cloudfront S3 Redirect Domain Error
-
-As shown in AWS Solution in Resources section, it is necessary to format CloudFront Origin Name name as such.
-
-`DOC-EXAMPLE-BUCKET.s3-website-us-east-1.amazonaws.com`
-
-For normal static website hosting the
-
-`aws_s3_bucket.main.bucket_domain_name`
-
-seems to work but with redirect bucket a 403 AccessDenied error is thrown whn trying to connect to redirect bucket from redirect cloudfront
-
 ## Expected
 
 Use
