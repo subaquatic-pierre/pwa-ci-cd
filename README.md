@@ -4,6 +4,16 @@ Infrastructure to host a React App on AWS S3. It provides SSL certificate and re
 
 ## Error
 
+There is an error when creating AWS CloudFront distribution linked to AWS S3 bucket which is configured to redirect all requests.
+
+The error origin is marked on line 98 in frontend/cloudfront.tf.
+
+A Github Repo to re-create the issue is here:
+
+<https://github.com/subaquatic-pierre/s3-webapp-infrastructure>
+
+Note: You will need a free AWS Hosted zone for testing
+
 ## Cloudfront S3 Redirect Domain Error
 
 As shown in AWS Solution in Resources section, it is necessary to format CloudFront Origin Name name as such.
@@ -35,6 +45,7 @@ instead of
 ## Steps to reproduce error
 
 1. Clone repo
+`git clone git@github.com:subaquatic-pierre/s3-webapp-infrastructure.git`
 
 2. Edit and rename terraform.tfvars.bak
 
