@@ -35,12 +35,17 @@ instead of
 ## Steps to reproduce error
 
 1. Clone repo
+
 2. Edit and rename terraform.tfvars.bak
+
 3. Run
 `terraform init`
 
 4. Run
-`aws s3 cp index.html s3://$(terraform output main_bucket_name)/`
+`terraform apply`
+
+4. Run
+`aws s3 cp index.html s3://$(terraform output main_bucket_name | tr -d \")/`
 
 5. Go to domain_name in browser
 `terraform output domain_name`
