@@ -12,7 +12,7 @@ A Github Repo to re-create the issue is here:
 
 <https://github.com/subaquatic-pierre/s3-webapp-infrastructure>
 
-Note: You will need a free AWS Hosted zone for testing
+Note: You will need AWS Hosted zone for testing
 
 ## Cloudfront S3 Redirect Domain Error
 
