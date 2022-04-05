@@ -1,0 +1,15 @@
+aws_account_id = "0000000000000"
+# ------
+# General 
+# ------
+tags = {
+  "Name"        = "myproject",
+  "Project"     = "myproject"
+  "Environment" = "stage"
+}
+
+
+# ------
+# Domain 
+# ------
+domain_name = "example.com"
