@@ -22,7 +22,7 @@ function App() {
         <h1 class="cover-heading shadow-lg">Progressive Web Application.</h1>
         <p class="lead shadow-lg">
           Create your own awesome web application with a CI/CD pipeline using
-          Terrafrom, Github actions and AWS. Follow the instructions in the
+          Terraform, Github actions and AWS. Follow the instructions in the
           README from the Github repository below.
         </p>
         <p class="lead">
