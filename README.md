@@ -1,4 +1,4 @@
-# s3-webapp-infrastructure
+# Progressive Web Application CI /CD Infrastructure
 
 Infrastructure to host a React App on AWS S3. It provides SSL certificate and redirect from www to root domain
 
@@ -33,24 +33,24 @@ instead of
 ## Steps to reproduce error
 
 1. Clone repo
-`git clone git@github.com:subaquatic-pierre/s3-webapp-infrastructure.git`
+   `git clone git@github.com:subaquatic-pierre/s3-webapp-infrastructure.git`
 
 2. Edit and rename terraform.tfvars.bak
 
 3. Run
-`terraform init`
+   `terraform init`
 
 4. Run
-`terraform apply`
+   `terraform apply`
 
-4. Run
-`aws s3 cp index.html s3://$(terraform output main_bucket_name | tr -d \")/`
+5. Run
+   `aws s3 cp index.html s3://$(terraform output main_bucket_name | tr -d \")/`
 
-5. Go to domain_name in browser
-`terraform output domain_name`
+6. Go to domain_name in browser
+   `terraform output domain_name`
 
-5. Go to www_domain_name in browser
-`terraform output www_domain_name`
+7. Go to www_domain_name in browser
+   `terraform output www_domain_name`
 
 ## Resources
 
