@@ -39,6 +39,7 @@ function App() {
             Learn more
           </a>
         </p>
+        <p>STAGING AREA</p>
       </main>
 
       <footer data-testid="footer" className="mastfoot mt-auto">
