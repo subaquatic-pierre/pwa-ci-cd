@@ -1,11 +1,11 @@
 # Progressive Web Application CI /CD Infrastructure
 
-Infrastructure to host a Progressive Web Application with AWS S3. It provides SSL certificate and redirect from www to root domain. It features a staging domain for testing as well as Github actions for test automation and deployment.
+Infrastructure and GitHub actions to test and deploy a Progressive Web Application hosted on AWS S3. It provides SSL certificate and redirects from `www.domain.com` to the root domain, ie `domain.com`. The pipeline also features a staging domain to verify the application is working as expected in a live environment, once verified the staging domain can be merged with the main branch which will trigger automatic deployment to the main domain.
 
 ## Main Features
 
 - :star: Progressive Web Application application hosted on AWS S3
-- :star: GitHub CI / CD actions for tests automation and deployment.
+- :star: GitHub CI/CD actions for test automation and deployment
 - :star: Application served on a worldwide CDN with AWS CloudFront
 - :star: Secure connection with SSL certificate on AWS Route 53
 - :star: Redirect all <http://www.domain.com> traffic to <https://domain.com>
@@ -40,19 +40,57 @@ Infrastructure to host a Progressive Web Application with AWS S3. It provides SS
 
    `terraform apply`
 
+### Set Github Secrets
+
+Before the pipeline can deploy the application to the various domains the GitHub secrets will need to be configured. Follow this article if you dont know how to configure GitHub secrets:
+
+[Configure Github Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment)
+
+This is a list of all secrets which need to be added to Github actions:
+
+- AWS_ACCESS_KEY_ID
+- AWS_REGION
+- AWS_SECRET_ACCESS_KEY
+- MAIN_CLOUDFRONT_DISTRIBUTION_ID
+- MAIN_S3_BUCKET_ID
+- STAGING_CLOUDFRONT_DISTRIBUTION_ID
+- STAGING_S3_BUCKET_ID
+
+#### Credentials
+
+These are found in the AWS console or your credential file in you home dir `$HOME/.aws/credentials`
+
+- AWS_ACCESS_KEY_ID
+- AWS_REGION
+- AWS_SECRET_ACCESS_KEY
+
+#### Terraform Outputs
+
+These are found in the output from `terraform apply` command, or you can run `terraform output` to see the latest outputs.
+
+- MAIN_CLOUDFRONT_DISTRIBUTION_ID - `main_cloudfront_dist_id`
+- MAIN_S3_BUCKET_ID - `main_s3_bucket_id`
+- STAGING_CLOUDFRONT_DISTRIBUTION_ID - `staging_cloudfront_dist_id`
+- STAGING_S3_BUCKET_ID - `staging_s3_bucket_id`
+
 ## Development Cycle
 
-Your repository should have 3 branches
+The repository should have 3 branches
 
 - `main`
 - `staging`
 - `dev`
 
-1. All active development will happen on the `dev` branch. Any push to the dev branch will start the CI/CD action. It will run all tests associated with you application.
+1. All active development will happen on the `dev` branch. Any push to the dev branch will start the first CI action. It will run all tests associated with the application.
 
-2. Once you have verified the tests are passing you will merge the `dev` branch with the staging branch. This will kick off the next action. The CI/CD pipeline will run the tests again, if the tests pass it will the deploy your application to to staging.domain.com
+2. Once you have verified that the tests are passing you will merge the `dev` branch with the `staging` branch. This will kick off the next action. The CI/CD pipeline will run the tests again, if the tests pass it will the deploy the application to `staging.domain.com`
 
-3. Once you have confirmed everything is working on the staging area you can then merge you `staging` branch with the `main`branch. This will kick off the last action which will run tests again, if all tests pass it will deploy you application to the main domain.
+3. Once you have confirmed everything is working in the staging area you can merge the `staging` branch with the `main` branch. This will kick off the last action which will run tests again, if all tests pass it will deploy the application to the main domain, ie. `domain.com`.
+
+## Notes
+
+- If `terraform apply` command fails the first time, retry it again. It may be an issue with the creation order of AWS resources.
+- Check the error below on how to fix redirect bucket issue.
 
 ---
 

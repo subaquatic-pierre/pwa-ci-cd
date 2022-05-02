@@ -1,7 +1,9 @@
 aws_account_id = "0000000000000"
+
 # ------
 # General 
 # ------
+
 tags = {
   "Name"        = "myproject",
   "Project"     = "myproject"
@@ -12,4 +14,5 @@ tags = {
 # ------
 # Domain 
 # ------
+
 domain_name = "example.com"
