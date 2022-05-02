@@ -1,35 +1,39 @@
 function App() {
   return (
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">Cool Web App</h3>
-          {/* <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="/">
+    <div className="cover-container d-flex h-100 p-3 mx-auto flex-column">
+      <header className="masthead mb-auto">
+        <div className="inner">
+          <h3 className="masthead-brand" data-testid="header">
+            Cool Web App
+          </h3>
+          {/* <nav className="nav nav-masthead justify-content-center">
+            <a className="nav-link active" href="/">
               Home
             </a>
-            <a class="nav-link" href="/">
+            <a className="nav-link" href="/">
               Features
             </a>
-            <a class="nav-link" href="/">
+            <a className="nav-link" href="/">
               Contact
             </a>
           </nav> */}
         </div>
       </header>
 
-      <main role="main" class="inner cover">
-        <h1 class="cover-heading shadow-lg">Progressive Web Application.</h1>
-        <p class="lead shadow-lg">
+      <main data-testid="center-text" role="main" className="inner cover">
+        <h1 className="cover-heading shadow-lg">
+          Progressive Web Application.
+        </h1>
+        <p className="lead shadow-lg">
           Create your own awesome web application with a CI/CD pipeline using
           Terraform, Github actions and AWS. Follow the instructions in the
           README from the Github repository below.
         </p>
-        <p class="lead">
+        <p className="lead">
           <a
             href="https://github.com/subaquatic-pierre/pwa-infrastructure"
             target="_blank"
-            class="btn btn-lg btn-secondary"
+            className="btn btn-lg btn-secondary"
             rel="noreferrer"
           >
             Learn more
@@ -37,8 +41,8 @@ function App() {
         </p>
       </main>
 
-      <footer class="mastfoot mt-auto">
-        <div class="inner">
+      <footer data-testid="footer" className="mastfoot mt-auto">
+        <div className="inner">
           <p>Cool Web App</p>
         </div>
       </footer>
