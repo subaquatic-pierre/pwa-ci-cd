@@ -1,0 +1,49 @@
+name: StagingCICD
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  run-ci-cd:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      # Checkout Repo
+      - uses: actions/checkout@v3
+
+      # NPM Install
+      - name: Install Dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: "npm"
+          cache-dependency-path: "app/package-lock.json"
+        run: npm install
+        working-directory: ./app
+
+      # Run Tests
+      - name: Run Tests
+        run: npm test
+        working-directory: ./app
+
+      # Build App
+      - name: Build App
+        run: npm build
+        working-directory: ./app
+
+      # Deploy to bucket
+      - name: Deploy to Staging Bucket
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: build
+          bucket: ${{ secrets.S3_BUCKET }}
+          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
+          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
