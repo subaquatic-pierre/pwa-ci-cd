@@ -18,19 +18,26 @@ Infrastructure to host a Progressive Web Application with AWS S3. It provides SS
 
 ## Infrastructure Diagram
 
-[alt Cloud Diagram](https://github.com/subaquatic-pierre/pwa-ci-cd/blob/main/assets/cloud-diagram.png?raw=true)
+![alt Cloud Diagram](https://github.com/subaquatic-pierre/pwa-ci-cd/blob/main/assets/cloud-diagram.png?raw=true)
 
 ## How To
 
 1. Clone the Repo
 2. Copy your application source code into the `app/` directory
 3. Run
+
    `cd terraform`
+
 4. Run
+
    `terraform init`
+
 5. Run
+
    `terraform plan -out plan`
+
 6. Run
+
    `terraform apply`
 
 ## Development Cycle
