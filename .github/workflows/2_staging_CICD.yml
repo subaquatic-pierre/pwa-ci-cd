@@ -10,18 +10,13 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      STAGING_S3_BUCKET_ID: ${{ secrets.STAGING_S3_BUCKET_ID }}
+      STAGING_S3_BUCKET_REGION: ${{ secrets.STAGING_S3_BUCKET_REGION }}
+      STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
       # Checkout Repo
       - uses: actions/checkout@v3
-
-      # NPM Install
-      - name: Install Dependencies
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          cache: "npm"
-          cache-dependency-path: "app/package-lock.json"
 
       # Run install
       - name: Run Install
@@ -38,15 +33,34 @@ jobs:
         run: npm run build
         working-directory: ./app
 
+      # Configure AWS
+      - name: Configure AWS
+        run: |
+          sudo apt-get update && sudo apt-get -y install awscli
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY 
+          aws configure set default.region $STAGING_S3_BUCKET_REGION
+
       # Deploy to bucket
-      - name: Deploy to Staging Bucket
-        uses: reggionick/s3-deploy@v3
-        with:
-          folder: build
-          bucket: ${{ secrets.STAGING_S3_BUCKET_ID }}
-          bucket-region: ${{ secrets.STAGING_S3_BUCKET_REGION }}
-          dist-id: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
-          invalidation: /
-          delete-removed: true
-          no-cache: true
-          private: true
+      - name: Deploy to Bucket
+        run: |
+          aws s3 cp build/ s3://$STAGING_S3_BUCKET_ID/ --recursive
+        working-directory: ./app
+
+      # Invalidate Cloudfront
+      - name: Invalidate Cloudfront to Bucket
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $STAGING_CLOUDFRONT_DISTRIBUTION_ID \
+            --paths "/"
+        working-directory: ./app
+
+        # with:
+        #   folder: build
+        #   bucket: ${{ secrets.STAGING_S3_BUCKET_ID }}
+        #   bucket-region: ${{ secrets.STAGING_S3_BUCKET_REGION }}
+        #   dist-id: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+        #   invalidation: /
+        #   delete-removed: true
+        #   no-cache: true
+        #   private: true
