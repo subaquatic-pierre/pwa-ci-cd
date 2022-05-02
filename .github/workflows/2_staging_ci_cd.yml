@@ -5,13 +5,16 @@ on:
     branches: [staging]
 
 jobs:
-  run-ci-cd:
+  run-staging-ci-cd:
     runs-on: ubuntu-latest
     env:
+      # CREDENTIALS
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      # BUCKET SECRETS
       STAGING_S3_BUCKET_ID: ${{ secrets.STAGING_S3_BUCKET_ID }}
-      STAGING_S3_BUCKET_REGION: ${{ secrets.STAGING_S3_BUCKET_REGION }}
       STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
@@ -39,7 +42,7 @@ jobs:
           sudo apt-get update && sudo apt-get -y install awscli
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY 
-          aws configure set default.region $STAGING_S3_BUCKET_REGION
+          aws configure set default.region $AWS_REGION
 
       # Deploy to bucket
       - name: Deploy to Bucket
@@ -48,19 +51,8 @@ jobs:
         working-directory: ./app
 
       # Invalidate Cloudfront
-      - name: Invalidate Cloudfront to Bucket
+      - name: Invalidate Cloudfront
         run: |
           aws cloudfront create-invalidation \
             --distribution-id $STAGING_CLOUDFRONT_DISTRIBUTION_ID \
             --paths "/"
-        working-directory: ./app
-
-        # with:
-        #   folder: build
-        #   bucket: ${{ secrets.STAGING_S3_BUCKET_ID }}
-        #   bucket-region: ${{ secrets.STAGING_S3_BUCKET_REGION }}
-        #   dist-id: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
-        #   invalidation: /
-        #   delete-removed: true
-        #   no-cache: true
-        #   private: true
