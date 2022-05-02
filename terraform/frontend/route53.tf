@@ -46,3 +46,17 @@ resource "aws_route53_record" "redirect" {
     evaluate_target_health = false
   }
 }
+
+resource "aws_route53_record" "staging" {
+  zone_id         = data.aws_route53_zone.main.id
+  name            = "staging.${var.domain_name}"
+  type            = "A"
+  allow_overwrite = true
+
+  alias {
+    name                   = aws_cloudfront_distribution.staging.domain_name
+    zone_id                = aws_cloudfront_distribution.staging.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
